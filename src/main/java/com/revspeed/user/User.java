@@ -1,6 +1,7 @@
 package com.revspeed.user;
 
 public class User {
+    private  int userId;
     private String userName;
     private String firstName;
     private String lastname;
@@ -8,6 +9,7 @@ public class User {
     private String emailId;
     private String address;
     private String password;
+    private String remarks;
     public User(){}
     public User(String userName, String firstName, String lastname, long mobileNumber, String emailId, String address, String password) {
         this.userName = userName;
@@ -17,6 +19,12 @@ public class User {
         this.emailId = emailId;
         this.address = address;
         this.password = password;
+    }
+    public int getUserId() {
+        return userId;
+    }
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
     public String getUserName() {
         return userName;
@@ -59,5 +67,16 @@ public class User {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isSame(String password, String retypePassword) {
+        return password.equals(retypePassword);
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 }
