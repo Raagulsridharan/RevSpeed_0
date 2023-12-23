@@ -2,7 +2,6 @@ package com.revspeed.main;
 
 import com.revspeed.services.serviceImp.UserServiceImpl;
 import com.revspeed.user.User;
-import com.revspeed.dao.daoImp.UserServiceDAOImpl;
 
 import java.util.Scanner;
 
