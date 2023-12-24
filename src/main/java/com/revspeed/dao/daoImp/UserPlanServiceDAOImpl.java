@@ -30,6 +30,31 @@ public class UserPlanServiceDAOImpl implements UserPlanServiceDAO {
 
     @Override
     public UserPlan save(UserPlan userPlan) {
+        if(userPlan.getUserPlanId() > 0){
+            update(userPlan);
+        } else {
+            insert(userPlan);
+        }
+        return userPlan;
+    }
+
+    private static void update(UserPlan userPlan) {
+        try(CallableStatement callableStatement = con.prepareCall("call revspeed_0.updateUserPlan(?, ?, ?, ?, ?, ?, ?, ?)")) {
+            callableStatement.setInt(1, userPlan.getUserPlanId());
+            callableStatement.setInt(2, userPlan.getUserid());
+            callableStatement.setInt(3, userPlan.getPlanId());
+            callableStatement.setString(4, userPlan.getPlanStatus());
+            callableStatement.setString(5, userPlan.getPaymentStatus());
+            callableStatement.setDate(6, convertToSqlDate(userPlan.getStartDate()));
+            callableStatement.setDate(7, convertToSqlDate(userPlan.getEndDate()));
+            callableStatement.setString(8, userPlan.getRemarks());
+            callableStatement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void insert(UserPlan userPlan) {
         try(CallableStatement callableStatement = con.prepareCall("call revspeed_0.insertUserPlan(?, ?, ?, ?, ?, ?, ?)")) {
             callableStatement.setInt(1, userPlan.getUserid());
             callableStatement.setInt(2, userPlan.getPlanId());
@@ -42,7 +67,6 @@ public class UserPlanServiceDAOImpl implements UserPlanServiceDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return userPlan;
     }
 
     private UserPlan BuildUserPlan(ResultSet resultSet) throws SQLException {

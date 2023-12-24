@@ -88,12 +88,28 @@ public class UserPlan {
 
     @Override
     public String toString() {
-        return "\t"+ planName + "\t" + planStatus + "\t" + paymentStatus + "\t\t" + startDate + "\t\t\t" + endDate;
+        return "\t"+ planId+"\t"+ planName + "\t" + planStatus + "\t" + paymentStatus + "\t\t" + startDate + "\t\t\t" + endDate;
     }
     private static Date incrementDate(Date date, int daysToAdd) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.DAY_OF_MONTH, daysToAdd);
         return calendar.getTime();
+    }
+
+    public void changePlan(Plan plan) {
+        this.planId = plan.getPlanId();
+        this.planName = plan.getPlanName();
+        this.startDate = new Date();
+        this.endDate = incrementDate(new Date(),plan.getValidityInDays());
+        this.planStatus = "Active";
+        this.paymentStatus = "due";
+        this.remarks = "subscription updated";
+    }
+
+    public void cancelPlan() {
+        this.planStatus = "Cancelled";
+        this.endDate = new Date();
+        this.remarks = "subscription cancelled";
     }
 }
