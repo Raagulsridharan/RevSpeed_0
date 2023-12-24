@@ -7,4 +7,6 @@ import java.util.List;
 public interface PlanService {
     List<Plan> getAllPlans();
     void showPlans(List<Plan> plans);
+
+    Plan findPlanById(List<Plan> plans, int planId);
 }

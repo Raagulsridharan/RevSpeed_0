@@ -21,4 +21,13 @@ public class PlanServiceImpl implements PlanService {
             System.out.println(plan.toString());
         }
     }
+
+    public Plan findPlanById(List<Plan> plans, int planId) {
+        for (Plan plan : plans) {
+            if (plan.getPlanId() == planId) {
+                return plan;
+            }
+        }
+        return null;
+    }
 }

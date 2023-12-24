@@ -21,4 +21,11 @@ public class UserPlanServiceImpl implements UserPlanService {
             System.out.println(userPlans.toString());
         }
     }
+
+    @Override
+    public UserPlan adduserPlan(UserPlan userPlan) {
+       UserPlanServiceDAO userPlanServiceDAO = new UserPlanServiceDAOImpl();
+       return userPlanServiceDAO.save(userPlan);
+    }
+
 }

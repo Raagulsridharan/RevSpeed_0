@@ -1,14 +1,10 @@
 package com.revspeed.dao.daoImp;
 
 import com.revspeed.dao.UserPlanServiceDAO;
-import com.revspeed.domain.Plan;
 import com.revspeed.domain.UserPlan;
 import com.revspeed.jdbc.GettingDBConnection;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +28,23 @@ public class UserPlanServiceDAOImpl implements UserPlanServiceDAO {
         return userPlans;
     }
 
+    @Override
+    public UserPlan save(UserPlan userPlan) {
+        try(CallableStatement callableStatement = con.prepareCall("call revspeed_0.insertUserPlan(?, ?, ?, ?, ?, ?, ?)")) {
+            callableStatement.setInt(1, userPlan.getUserid());
+            callableStatement.setInt(2, userPlan.getPlanId());
+            callableStatement.setString(3, userPlan.getPlanStatus());
+            callableStatement.setString(4, userPlan.getPaymentStatus());
+            callableStatement.setDate(5, convertToSqlDate(userPlan.getStartDate()));
+            callableStatement.setDate(6, convertToSqlDate(userPlan.getEndDate()));
+            callableStatement.setString(7, userPlan.getRemarks());
+            callableStatement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return userPlan;
+    }
+
     private UserPlan BuildUserPlan(ResultSet resultSet) throws SQLException {
         UserPlan userPlan = new UserPlan();
         userPlan.setUserPlanId(resultSet.getInt("userPlanId"));
@@ -44,5 +57,10 @@ public class UserPlanServiceDAOImpl implements UserPlanServiceDAO {
         userPlan.setEndDate(resultSet.getDate("endDate"));
         userPlan.setRemarks(resultSet.getString("remarks"));
         return  userPlan;
+    }
+
+    private static java.sql.Date convertToSqlDate(java.util.Date utilDate) {
+        // Convert java.util.Date to java.sql.Date
+        return new java.sql.Date(utilDate.getTime());
     }
 }

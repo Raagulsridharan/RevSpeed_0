@@ -1,6 +1,10 @@
 package com.revspeed.domain;
 
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
+
+import static java.util.Date.*;
 
 public class UserPlan {
     private int userPlanId;
@@ -12,6 +16,21 @@ public class UserPlan {
     private Date endDate;
     private String remarks;
     private String planName;
+
+    public UserPlan(){
+
+    }
+    public UserPlan(User user, Plan plan) {
+        userid = user.getUserId();
+        planId = plan.getPlanId();
+        planName = plan.getPlanName();
+        planStatus = "Active";
+        paymentStatus = "due";
+        startDate = new Date();
+        endDate = incrementDate(new Date(),plan.getValidityInDays());
+        remarks = "new subscription added";
+    }
+
     public int getUserPlanId() {
         return userPlanId;
     }
@@ -70,5 +89,11 @@ public class UserPlan {
     @Override
     public String toString() {
         return "\t"+ planName + "\t" + planStatus + "\t" + paymentStatus + "\t\t" + startDate + "\t\t\t" + endDate;
+    }
+    private static Date incrementDate(Date date, int daysToAdd) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_MONTH, daysToAdd);
+        return calendar.getTime();
     }
 }

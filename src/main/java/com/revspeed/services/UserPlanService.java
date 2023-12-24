@@ -7,4 +7,6 @@ import java.util.List;
 public interface UserPlanService {
     List<UserPlan> getUserPlans(int userId);
     void showUserPlans(List<UserPlan> userPlans);
+    UserPlan adduserPlan(UserPlan userPlan);
+
 }
