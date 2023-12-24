@@ -2,7 +2,7 @@ package com.revspeed.dao.daoImp;
 
 import com.revspeed.jdbc.GettingDBConnection;
 import com.revspeed.dao.UserServiceDAO;
-import com.revspeed.user.User;
+import com.revspeed.domain.User;
 
 import java.sql.*;
 

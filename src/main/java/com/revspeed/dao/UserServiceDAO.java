@@ -1,6 +1,6 @@
 package com.revspeed.dao;
 
-import com.revspeed.user.User;
+import com.revspeed.domain.User;
 
 public interface UserServiceDAO {
     User save(User userObject);

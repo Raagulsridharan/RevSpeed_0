@@ -1,4 +1,4 @@
-package com.revspeed.user;
+package com.revspeed.domain;
 
 public class User {
     private  int userId;
@@ -62,6 +62,18 @@ public class User {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    @Override
+    public String toString() {
+        return "My Profile\n" +"============"+
+                "\n\tUserName\t : " + userName +
+                "\n\tName\t\t : " + firstName +" "+ lastname +
+                "\n\tMobileNumber : " + mobileNumber +
+                "\n\tEmailId\t\t : " + emailId +
+                "\n\tAddress\t\t : " + address +
+                "\n\tRemarks\t\t : " + remarks ;
+    }
+
     public String getPassword() {
         return password;
     }

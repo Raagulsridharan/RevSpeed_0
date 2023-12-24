@@ -2,7 +2,7 @@ package com.revspeed.services.serviceImp;
 
 import com.revspeed.dao.daoImp.UserServiceDAOImpl;
 import com.revspeed.services.UserService;
-import com.revspeed.user.User;
+import com.revspeed.domain.User;
 import java.util.Scanner;
 import java.io.Console;
 
