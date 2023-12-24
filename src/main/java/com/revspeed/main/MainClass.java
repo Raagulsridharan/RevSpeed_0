@@ -2,7 +2,6 @@ package com.revspeed.main;
 
 import com.revspeed.domain.Plan;
 import com.revspeed.domain.UserPlan;
-import com.revspeed.services.PlanService;
 import com.revspeed.services.UserPlanService;
 import com.revspeed.services.serviceImp.PlanServiceImpl;
 import com.revspeed.services.serviceImp.UserPlanServiceImpl;
@@ -11,27 +10,26 @@ import com.revspeed.domain.User;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class MainClass {
     private static final Scanner sc = new Scanner(System.in);
 
     private static User user = null; // session
-    private static UserServiceImpl userService = new UserServiceImpl();
-    private static PlanServiceImpl planService = new PlanServiceImpl();
-    private static UserPlanService userPlanService = new UserPlanServiceImpl();
+    private static final UserServiceImpl userService = new UserServiceImpl();
+    private static final PlanServiceImpl planService = new PlanServiceImpl();
+    private static final UserPlanService userPlanService = new UserPlanServiceImpl();
     public static void main(String[] args) {
 
         System.out.println("------------------------");
         System.out.println("~ Welcome to RevSpeed_0 ~");
         System.out.println("------------------------");
-        while (true){
+        do {
             showMainMenu();
-            while(user != null){
+            while (user != null) {
                 showUserMenu();
             }
-        }
+        } while (true);
     }
 
     private static void showMainMenu() {
