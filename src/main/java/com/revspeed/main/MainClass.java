@@ -1,9 +1,12 @@
 package com.revspeed.main;
 
 import com.revspeed.domain.Plan;
+import com.revspeed.domain.UserPayment;
 import com.revspeed.domain.UserPlan;
+import com.revspeed.services.UserPaymentService;
 import com.revspeed.services.UserPlanService;
 import com.revspeed.services.serviceImp.PlanServiceImpl;
+import com.revspeed.services.serviceImp.UserPaymentServiceImpl;
 import com.revspeed.services.serviceImp.UserPlanServiceImpl;
 import com.revspeed.services.serviceImp.UserServiceImpl;
 import com.revspeed.domain.User;
@@ -19,6 +22,7 @@ public class MainClass {
     private static final UserServiceImpl userService = new UserServiceImpl();
     private static final PlanServiceImpl planService = new PlanServiceImpl();
     private static final UserPlanService userPlanService = new UserPlanServiceImpl();
+    private static final UserPaymentService userPaymentService = new UserPaymentServiceImpl();
     public static void main(String[] args) {
 
         System.out.println("------------------------");
@@ -168,6 +172,7 @@ public class MainClass {
                 existingUserPlan.changePlan(plan);
                 userPlanService.saveUserPlan(existingUserPlan);
                 System.out.println("Subscription updated successfully...");
+                addPayment(existingUserPlan, plan);
                 userPlanService.showUserPlans(userPlanService.getUserPlans(user.getUserId()));
                 showUserPlanMenu();
             }
@@ -198,12 +203,25 @@ public class MainClass {
             else{
                 UserPlan userPlan = new UserPlan(user,plan);
                 userPlanService.saveUserPlan(userPlan);
-                System.out.println("Subscription added successfully...");
+                System.out.println("Subscription added successfully...\nPlease continue to Payment...");
+                addPayment(userPlan, plan);
                 userPlanService.showUserPlans(userPlanService.getUserPlans(user.getUserId()));
             }
         }
 
         showUserPlanMenu();
+    }
+
+    private static void addPayment(UserPlan userPlan, Plan plan) {
+        System.out.print("Please enter yout BankName : ");
+        UserPayment userPayment = new UserPayment(user.getUserId(), userPlan.getPlanId(), userPlan.getUserPlanId(),"due", plan.getCost(),"NetBanking");
+        userPayment.setBankName(sc.next());
+        System.out.print("Please enter the customer Id : ");
+        userPayment.setCustomerId(sc.nextLong());
+        userPayment.setTransactionStatus("Success");
+        userPaymentService.save(userPayment);
+        userPlan.setPaymentStatus("Paid");
+        userPlanService.saveUserPlan(userPlan);
     }
 
 }

@@ -31,14 +31,14 @@ public class UserPlanServiceDAOImpl implements UserPlanServiceDAO {
     @Override
     public UserPlan save(UserPlan userPlan) {
         if(userPlan.getUserPlanId() > 0){
-            update(userPlan);
+            userPlan = update(userPlan);
         } else {
-            insert(userPlan);
+            userPlan = insert(userPlan);
         }
         return userPlan;
     }
 
-    private static void update(UserPlan userPlan) {
+    private static UserPlan update(UserPlan userPlan) {
         try(CallableStatement callableStatement = con.prepareCall("call revspeed_0.updateUserPlan(?, ?, ?, ?, ?, ?, ?, ?)")) {
             callableStatement.setInt(1, userPlan.getUserPlanId());
             callableStatement.setInt(2, userPlan.getUserid());
@@ -52,9 +52,10 @@ public class UserPlanServiceDAOImpl implements UserPlanServiceDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return userPlan;
     }
 
-    private static void insert(UserPlan userPlan) {
+    private static UserPlan insert(UserPlan userPlan) {
         try(CallableStatement callableStatement = con.prepareCall("call revspeed_0.insertUserPlan(?, ?, ?, ?, ?, ?, ?)")) {
             callableStatement.setInt(1, userPlan.getUserid());
             callableStatement.setInt(2, userPlan.getPlanId());
@@ -64,9 +65,17 @@ public class UserPlanServiceDAOImpl implements UserPlanServiceDAO {
             callableStatement.setDate(6, convertToSqlDate(userPlan.getEndDate()));
             callableStatement.setString(7, userPlan.getRemarks());
             callableStatement.execute();
+            ResultSet resultSet = callableStatement.getResultSet();
+            if (resultSet.next()) {
+                int insertedId = resultSet.getInt("insertedId");
+                userPlan.setUserPlanId(insertedId);
+            } else {
+                System.out.println("Error retrieving inserted ID.");
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return userPlan;
     }
 
     private UserPlan BuildUserPlan(ResultSet resultSet) throws SQLException {
