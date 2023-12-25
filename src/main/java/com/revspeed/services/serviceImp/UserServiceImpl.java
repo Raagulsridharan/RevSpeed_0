@@ -4,32 +4,42 @@ import com.revspeed.dao.UserServiceDAO;
 import com.revspeed.dao.daoImp.UserServiceDAOImpl;
 import com.revspeed.services.UserService;
 import com.revspeed.domain.User;
+import org.w3c.dom.ls.LSOutput;
+
 import java.util.Scanner;
 import java.io.Console;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class UserServiceImpl implements UserService {
     private static final Scanner sc = new Scanner(System.in);
     Console console = System.console();
+    UserServiceDAO userServiceDAO = new UserServiceDAOImpl();
+    private static final String EMAIL_PATTERN =
+            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +
+                    "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+    private static final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+    public static boolean isValidEmail(String email) {
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
     @Override
     public User register() {
         try {
             User userObject = new User();
 
-            System.out.print("Enter your Username : ");
-            userObject.setUserName(sc.next());
+            userObject.setUserName(checkUserName());
             System.out.print("Enter your Firstname : ");
             userObject.setFirstName(sc.next());
             System.out.print("Enter your Lastname : ");
             userObject.setLastname(sc.next());
-            System.out.print("Enter your Mobile number : ");
-            long mobileNumber = sc.nextLong();
-            sc.nextLine();
-            userObject.setMobileNumber(mobileNumber);
-            System.out.print("Enter your Email Id : ");
-            userObject.setEmailId(sc.nextLine());
+            userObject.setMobileNumber(checkMobileNumber());
+            userObject.setEmailId(checkEmailId());
             System.out.print("Enter your Address : ");
             userObject.setAddress(sc.nextLine());
+            sc.nextLine();
             userObject.setPassword(checkPassword(userObject));
 
             UserServiceDAOImpl dao = new UserServiceDAOImpl();
@@ -59,7 +69,66 @@ public class UserServiceImpl implements UserService {
         } while (!isSame);
         return password;
     }
-
+    private String checkUserName() {
+        String userName;
+        boolean isDuplicate;
+        do {
+            System.out.print("Enter your UserName : ");
+            userName = sc.next();
+            isDuplicate = userServiceDAO.isUserNameExist(userName);
+            if(isDuplicate){
+                System.out.println("UserName already exist!!!");
+            }
+        } while (isDuplicate);
+        return userName;
+    }
+    private long checkMobileNumber() {
+        long mobileNumber;
+        boolean isValid = true;
+        do {
+            System.out.print("Enter your MobileNumber : ");
+            mobileNumber = sc.nextLong();
+            if(String.valueOf(mobileNumber).length()!=10){
+                System.out.println("Invalid Mobile Number!!! Mobile number should be 10 digits...");
+                isValid = false;
+                continue;
+            }
+            boolean isDuplicate = userServiceDAO.isMobileNumberExist(mobileNumber);
+            if(isDuplicate){
+                System.out.println("MobileNumber already exist!!!");
+                isValid = false;
+                continue;
+            }
+            isValid = true;
+        } while (!isValid);
+        return mobileNumber;
+    }
+    private String checkEmailId() {
+        String emailId;
+        boolean isValid = true;
+        do {
+            System.out.print("Enter your EmailId : ");
+            emailId = sc.next();
+            if (emailId.isEmpty()) {
+                System.out.println("EmailId is mandatory!!!");
+                isValid = false;
+                continue;
+            }
+            if (!isValidEmail(emailId)) {
+                System.out.println("EmailId is invalid!!!");
+                isValid = false;
+                continue;
+            }
+            boolean isDuplicate = userServiceDAO.isEmailExist(emailId);
+            if(isDuplicate){
+                System.out.println("EmailId already exist!!!");
+                isValid = false;
+                continue;
+            }
+            isValid = true;
+        } while (!isValid);
+        return emailId;
+    }
     private String promptPassword(String prompt) {
         if (console != null) {
             char[] passwordArray = console.readPassword(prompt);

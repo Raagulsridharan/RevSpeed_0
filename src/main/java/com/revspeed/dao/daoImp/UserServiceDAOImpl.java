@@ -83,4 +83,37 @@ public class UserServiceDAOImpl implements UserServiceDAO {
         user.setRemarks(resultSet.getString("remarks"));
         return  user;
     }
+    public boolean isEmailExist(String emailId) {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = con.prepareStatement("select * from user_profile where emailId = ?");
+            preparedStatement.setString(1,emailId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public boolean isMobileNumberExist(long mobileNumber){
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = con.prepareStatement("select * from user_profile where mobileNumber = ?");
+            preparedStatement.setLong(1,mobileNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public boolean isUserNameExist(String userName){
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = con.prepareStatement("select * from user_profile where userName = ?");
+            preparedStatement.setString(1,userName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
