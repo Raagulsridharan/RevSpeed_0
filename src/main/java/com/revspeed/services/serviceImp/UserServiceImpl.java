@@ -1,10 +1,12 @@
 package com.revspeed.services.serviceImp;
 
+import com.revspeed.dao.UserServiceDAO;
 import com.revspeed.dao.daoImp.UserServiceDAOImpl;
 import com.revspeed.services.UserService;
 import com.revspeed.domain.User;
 import java.util.Scanner;
 import java.io.Console;
+
 
 public class UserServiceImpl implements UserService {
     private static final Scanner sc = new Scanner(System.in);
@@ -32,6 +34,7 @@ public class UserServiceImpl implements UserService {
 
             UserServiceDAOImpl dao = new UserServiceDAOImpl();
             userObject = dao.save(userObject);
+
             if(userObject != null){
                 System.out.println("Registered successfully...");
             } else {
@@ -82,5 +85,28 @@ public class UserServiceImpl implements UserService {
             System.out.println("Invalid username or password...");
         }
         return user;
+    }
+    public User updateMobileNumber(User user) {
+        System.out.print("Please enter the New Mobile Number : ");
+        long mobileNumber = sc.nextLong();
+        user.setMobileNumber(mobileNumber);
+        UserServiceDAO userServiceDAO = new UserServiceDAOImpl();
+        System.out.println("Mobile number updated successfully...");
+        return userServiceDAO.save(user);
+    }
+    public User updateEmail(User user) {
+        System.out.print("Please enter the Email Id : ");
+        String emailId = sc.next();
+        user.setEmailId(emailId);
+        UserServiceDAO userServiceDAO = new UserServiceDAOImpl();
+        System.out.println("Email Id updated successfully...");
+        return userServiceDAO.save(user);
+    }
+    public User updatePassword(User user) {
+        String password = checkPassword(user);
+        user.setPassword(password);
+        UserServiceDAO userServiceDAO = new UserServiceDAOImpl();
+        System.out.println("Password updated successfully...");
+        return userServiceDAO.save(user);
     }
 }

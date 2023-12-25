@@ -12,22 +12,48 @@ public class UserServiceDAOImpl implements UserServiceDAO {
         con = GettingDBConnection.createInstance().getConnect();
     }
     public User save(User userObject) {
-        String insertQuery = "insert into user_profile(userName,firstName,lastName,mobileNumber,emailId,address,password) values(?,?,?,?,?,?,?)";
-        try(PreparedStatement preparedStatement = con.prepareStatement(insertQuery)) {
-            preparedStatement.setString(1, userObject.getUserName());
-            preparedStatement.setString(2, userObject.getFirstName());
-            preparedStatement.setString(3, userObject.getLastname());
-            preparedStatement.setLong(4, userObject.getMobileNumber());
-            preparedStatement.setString(5, userObject.getEmailId());
-            preparedStatement.setString(6, userObject.getAddress());
-            preparedStatement.setString(7, userObject.getPassword());
-            preparedStatement.execute();
+        if(userObject.getUserId()>0){
+            return update(userObject);
+        }
+        return insert(userObject);
+    }
+    private User insert(User userObject) {
+        try(CallableStatement callableStatement = con.prepareCall("call revspeed_0.insertUserProfile(?,?,?,?,?,?,?)")) {
+            callableStatement.setString(1, userObject.getUserName());
+            callableStatement.setString(2, userObject.getFirstName());
+            callableStatement.setString(3, userObject.getLastname());
+            callableStatement.setLong(4, userObject.getMobileNumber());
+            callableStatement.setString(5, userObject.getEmailId());
+            callableStatement.setString(6, userObject.getAddress());
+            callableStatement.setString(7, userObject.getPassword());
+            callableStatement.execute();
+            ResultSet resultSet = callableStatement.getResultSet();
+            if (resultSet.next()) {
+                int insertedId = resultSet.getInt("insertedId");
+                userObject.setUserId(insertedId);
+            } else {
+                System.out.println("Error retrieving inserted ID.");
+            }
 
-            return getUser(userObject.getUserName(),userObject.getPassword());
+            return userObject;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+    private User update(User userObject) {
+        try(CallableStatement callableStatement = con.prepareCall("call revspeed_0.updateUserProfile(?,?,?,?)")) {
+            callableStatement.setInt(1, userObject.getUserId());
+            callableStatement.setLong(2, userObject.getMobileNumber());
+            callableStatement.setString(3, userObject.getEmailId());
+            callableStatement.setString(4, userObject.getPassword());
+            callableStatement.execute();
+
+            return userObject;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public User getUser(String userName, String password){
         try(CallableStatement callableStatement = con.prepareCall("call revspeed_0.getUserNamePswd(?,?)")) {
             callableStatement.setString(1,userName);

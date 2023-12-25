@@ -17,7 +17,6 @@ import java.util.Scanner;
 
 public class MainClass {
     private static final Scanner sc = new Scanner(System.in);
-
     private static User user = null; // session
     private static final UserServiceImpl userService = new UserServiceImpl();
     private static final PlanServiceImpl planService = new PlanServiceImpl();
@@ -35,7 +34,6 @@ public class MainClass {
             }
         } while (true);
     }
-
     private static void showMainMenu() {
         System.out.print("Choose your option:\n\t1.Login\n\t2.Register\n\t3.Forget Password\n\t4.View Plans\n\t5.Exit\noption : ");
 
@@ -67,7 +65,6 @@ public class MainClass {
                 System.out.println("Please choose correct option...");
         }
     }
-
     private static void showUserMenu() {
         System.out.print("Choose your option:\n\t1.View Profile\n\t2.Manage Subscriptions\n\t3.View Plans\n\t4.Logout\nOption : ");
 
@@ -77,6 +74,7 @@ public class MainClass {
                 System.out.println("Profile");
                 System.out.println("========");
                 System.out.println(user.toString());
+                showUserProfileMenu();
                 break;
             case 2:
                 System.out.println("Manage Subscriptions");
@@ -85,8 +83,9 @@ public class MainClass {
                 showUserPlanMenu();
                 break;
             case 3:
-                System.out.println("Internet and BroadBand");
+                System.out.println("View Plans");
                 System.out.println("========");
+                planService.showPlans(planService.getAllPlans());
                 break;
             case 4:
                 System.out.println("Logging Out..");
@@ -95,6 +94,27 @@ public class MainClass {
                 break;
             default:
                 System.out.println("Please choose correct option...");
+        }
+    }
+    private static void showUserProfileMenu() {
+        System.out.println("Choose options:\n\t1.Update MobileNumber\n\t2.Change Password\n\t3.Update Email\n\t4.Back");
+        int option = sc.nextInt();
+        switch (option){
+            case 1:
+                user = userService.updateMobileNumber(user);
+                break;
+            case 2:
+                user = userService.updatePassword(user);
+                break;
+            case 3:
+                user = userService.updateEmail(user);
+                break;
+            case 4:
+                showUserMenu();
+                break;
+            default:
+                System.out.println("Please enter the correct option....");
+                showUserPlanMenu();
         }
     }
     private static void showUserPlanMenu() {
@@ -118,7 +138,6 @@ public class MainClass {
                 showUserPlanMenu();
         }
     }
-
     private static void cancelSubscriptionMenu() {
         System.out.println("Currently available user plans are...");
         List<UserPlan> userPlans = userPlanService.getUserPlans(user.getUserId());
@@ -145,7 +164,6 @@ public class MainClass {
             cancelSubscriptionMenu();
         }
     }
-
     private static void updateSubscriptionMenu() {
         System.out.println("Currently available user plans are...");
         List<UserPlan> userPlans = userPlanService.getUserPlans(user.getUserId());
@@ -182,7 +200,6 @@ public class MainClass {
             updateSubscriptionMenu();
         }
     }
-
     private static void addSubscriptionMenu() {
         System.out.println("Currently available plans are...");
         List<Plan> plans = planService.getAllPlans();
@@ -208,10 +225,8 @@ public class MainClass {
                 userPlanService.showUserPlans(userPlanService.getUserPlans(user.getUserId()));
             }
         }
-
         showUserPlanMenu();
     }
-
     private static void addPayment(UserPlan userPlan, Plan plan) {
         System.out.print("Please enter yout BankName : ");
         UserPayment userPayment = new UserPayment(user.getUserId(), userPlan.getPlanId(), userPlan.getUserPlanId(),"due", plan.getCost(),"NetBanking");
@@ -223,5 +238,4 @@ public class MainClass {
         userPlan.setPaymentStatus("Paid");
         userPlanService.saveUserPlan(userPlan);
     }
-
 }
