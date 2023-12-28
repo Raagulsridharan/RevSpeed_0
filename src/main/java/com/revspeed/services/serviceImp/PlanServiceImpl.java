@@ -16,7 +16,9 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public void showPlans(List<Plan> plans) {
-        System.out.println("planId \t planName \t\t cost \t planType \t validityInDays \t planDescription ");
+        //System.out.printf("%-8d %-20s %-10.2f %-15s %-15d %-30s","PlanId", "PlanName", "Cost", "PlanType", "ValidityInDays", "PlanDescription ");
+        System.out.printf("%-8s %-20s %-10s %-15s %-15s %-80s%n",
+                "PlanId", "PlanName", "Cost", "PlanType", "ValidityInDays", "PlanDescription");        //System.out.println("PlanId \t PlanName \t\t Cost \t PlanType \t ValidityInDays \t PlanDescription ");
         for (Plan plan : plans) {
             System.out.println(plan.toString());
         }

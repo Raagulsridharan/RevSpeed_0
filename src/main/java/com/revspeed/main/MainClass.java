@@ -10,6 +10,8 @@ import com.revspeed.services.serviceImp.UserPaymentServiceImpl;
 import com.revspeed.services.serviceImp.UserPlanServiceImpl;
 import com.revspeed.services.serviceImp.UserServiceImpl;
 import com.revspeed.domain.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.List;
@@ -22,8 +24,9 @@ public class MainClass {
     private static final PlanServiceImpl planService = new PlanServiceImpl();
     private static final UserPlanService userPlanService = new UserPlanServiceImpl();
     private static final UserPaymentService userPaymentService = new UserPaymentServiceImpl();
+    private static final Logger logger = LoggerFactory.getLogger(MainClass.class);
     public static void main(String[] args) {
-
+        logger.info("Application Started {} {}", "RevSpeed_0",MainClass.class.getSimpleName());
         System.out.println("------------------------");
         System.out.println("~ Welcome to RevSpeed_0 ~");
         System.out.println("------------------------");
@@ -35,19 +38,24 @@ public class MainClass {
         } while (true);
     }
     private static void showMainMenu() {
-        System.out.print("Choose your option:\n\t1.Login\n\t2.Register\n\t3.Forget Password\n\t4.View Plans\n\t5.Exit\noption : ");
-
+        System.out.print("Choose Your Option :\n\t1.Login\n\t2.Register\n\t3.Forget Password\n\t4.View Plans\n\t5.Exit\nOption : ");
         int option = sc.nextInt();
         switch (option){
             case 1:
+                System.out.println("========================");
                 System.out.println("Login is progressing...");
                 System.out.println("========================");
                 user = userService.login();
                 break;
             case 2:
+                System.out.println("==========================");
                 System.out.println("Register is progressing...");
-                System.out.println("========================");
+                System.out.println("==========================");
                 user = userService.register();
+                if(user==null){
+                    System.out.println("Registration failed!!!\nTry again later...");
+                    return;
+                }
                 user = userService.login();
                 break;
             case 3:
@@ -71,33 +79,36 @@ public class MainClass {
         int option = sc.nextInt();
         switch (option){
             case 1:
-                System.out.println("Profile");
-                System.out.println("========");
+                System.out.println("=======");
+                System.out.println("My Profile");
+                System.out.println("=======");
                 System.out.println(user.toString());
                 showUserProfileMenu();
                 break;
             case 2:
-                System.out.println("Manage Subscriptions");
-                System.out.println("========");
+                System.out.println("====================");
+                System.out.println("Manage My Subscriptions");
+                System.out.println("====================");
                 userPlanService.showUserPlans(userPlanService.getUserPlans(user.getUserId()));
                 showUserPlanMenu();
                 break;
             case 3:
-                System.out.println("View Plans");
-                System.out.println("========");
+                System.out.println("==========");
+                System.out.println("View All Plans");
+                System.out.println("==========");
                 planService.showPlans(planService.getAllPlans());
                 break;
             case 4:
-                System.out.println("Logging Out..");
+                System.out.println("Logging Out...");
                 user = null;
-                System.out.println("Good bye!");
+                System.out.println("!!!Good bye!!!");
                 break;
             default:
-                System.out.println("Please choose correct option...");
+                System.out.println("Please choose correct option!!!");
         }
     }
     private static void showUserProfileMenu() {
-        System.out.println("Choose options:\n\t1.Update MobileNumber\n\t2.Change Password\n\t3.Update Email\n\t4.Back");
+        System.out.println("Choose Options :\n\t1.Update MobileNumber\n\t2.Change Password\n\t3.Update Email\n\t4.Back");
         int option = sc.nextInt();
         switch (option){
             case 1:
@@ -113,12 +124,12 @@ public class MainClass {
                 showUserMenu();
                 break;
             default:
-                System.out.println("Please enter the correct option....");
+                System.out.println("Please choose correct option!!!");
                 showUserPlanMenu();
         }
     }
     private static void showUserPlanMenu() {
-        System.out.println("Choose options:\n\t1.Add Subscription\n\t2.Change Subscription\n\t3.Cancel Subscription\n\t4.Back");
+        System.out.println("Choose Options :\n\t1.Add Subscription\n\t2.Change Subscription\n\t3.Cancel Subscription\n\t4.Back");
         int option = sc.nextInt();
         switch (option){
             case 1:
@@ -134,7 +145,7 @@ public class MainClass {
                 showUserMenu();
                 break;
             default:
-                System.out.println("Please enter the correct option....");
+                System.out.println("Please choose correct option!!!");
                 showUserPlanMenu();
         }
     }
@@ -143,14 +154,14 @@ public class MainClass {
         List<UserPlan> userPlans = userPlanService.getUserPlans(user.getUserId());
         userPlanService.showUserPlans(userPlans);
 
-        System.out.print("Please enter the existing plan Id to Cancel: ");
+        System.out.print("Please enter the existing plan Id to Cancel : ");
         int existingPlanId = sc.nextInt();
 
         Date currentDate = new Date();
         UserPlan existingUserPlan = userPlanService.findUserPlanById(userPlans,existingPlanId);
         if(existingUserPlan != null) {
             if(existingUserPlan.getPlanStatus().equalsIgnoreCase("CANCELLED")) {
-                System.out.println("The selected plan is already cancelled.");
+                System.out.println("The selected plan is already cancelled!!!");
             } else if((existingUserPlan.getEndDate().compareTo(currentDate) > 0)){
                 existingUserPlan.cancelPlan();
                 userPlanService.saveUserPlan(existingUserPlan);
@@ -160,7 +171,7 @@ public class MainClass {
             }
         }
         else {
-            System.out.println("please select the valid plan to cancel");
+            System.out.println("Please select the valid plan to cancel!");
             cancelSubscriptionMenu();
         }
     }
@@ -183,7 +194,7 @@ public class MainClass {
             int newPlanId = sc.nextInt();
 
             if(existingPlanId == newPlanId){
-                System.out.print("selected plans are same. please select different plan. ");
+                System.out.print("Selected plans are same.! Please select different plan.!! ");
                 updateSubscriptionMenu();
             } else {
                 Plan plan = planService.findPlanById(plans, newPlanId);
@@ -196,7 +207,7 @@ public class MainClass {
             }
         }
         else {
-            System.out.println("please select the Active plan to update");
+            System.out.println("Please select the Active plan to update");
             updateSubscriptionMenu();
         }
     }
@@ -215,7 +226,7 @@ public class MainClass {
         else {
             Plan plan = planService.findPlanById(plans, planId);
             if(plan==null){
-                System.out.println("Invalid plan Selection...");
+                System.out.println("Invalid plan Selection!!!");
             }
             else{
                 UserPlan userPlan = new UserPlan(user,plan);
@@ -228,7 +239,7 @@ public class MainClass {
         showUserPlanMenu();
     }
     private static void addPayment(UserPlan userPlan, Plan plan) {
-        System.out.print("Please enter yout BankName : ");
+        System.out.print("Please enter your BankName : ");
         UserPayment userPayment = new UserPayment(user.getUserId(), userPlan.getPlanId(), userPlan.getUserPlanId(),"due", plan.getCost(),"NetBanking");
         userPayment.setBankName(sc.next());
         System.out.print("Please enter the customer Id : ");

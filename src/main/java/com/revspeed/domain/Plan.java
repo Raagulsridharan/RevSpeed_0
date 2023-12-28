@@ -50,6 +50,9 @@ public class Plan {
 
     @Override
     public String toString() {
-        return "\t"+ planId + "\t" + planName + "\t" + cost + "\t" + planType + "\t\t" + validityInDays + "\t\t\t" + planDescription;
+        return String.format("%-8d %-20s %-10.2f %-15s %-15d %-80s",
+                planId, planName, cost, planType, validityInDays, planDescription);
+        //return "\t"+ planId + "\t" + planName + "\t" + cost + "\t" + planType + "\t\t" + validityInDays + "\t\t\t" + planDescription;
+
     }
 }

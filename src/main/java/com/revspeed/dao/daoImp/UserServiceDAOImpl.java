@@ -3,6 +3,9 @@ package com.revspeed.dao.daoImp;
 import com.revspeed.jdbc.GettingDBConnection;
 import com.revspeed.dao.UserServiceDAO;
 import com.revspeed.domain.User;
+import com.revspeed.services.serviceImp.UserServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 
@@ -11,6 +14,7 @@ public class UserServiceDAOImpl implements UserServiceDAO {
     public UserServiceDAOImpl() {
         con = GettingDBConnection.createInstance().getConnect();
     }
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceDAOImpl.class);
     public User save(User userObject) {
         if(userObject.getUserId()>0){
             return update(userObject);
@@ -27,6 +31,9 @@ public class UserServiceDAOImpl implements UserServiceDAO {
             callableStatement.setString(6, userObject.getAddress());
             callableStatement.setString(7, userObject.getPassword());
             callableStatement.execute();
+
+            logger.info("Registered details getting inserted {}", UserServiceDAOImpl.class.getSimpleName());
+
             ResultSet resultSet = callableStatement.getResultSet();
             if (resultSet.next()) {
                 int insertedId = resultSet.getInt("insertedId");
@@ -37,7 +44,9 @@ public class UserServiceDAOImpl implements UserServiceDAO {
 
             return userObject;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            logger.error("Exception occurs while inserting details to DB",e);
+            //throw new RuntimeException(e);
+            return null;
         }
     }
     private User update(User userObject) {
@@ -50,6 +59,7 @@ public class UserServiceDAOImpl implements UserServiceDAO {
 
             return userObject;
         } catch (SQLException e) {
+            //logger.error("Exception occurs while updating details to DB",e);
             throw new RuntimeException(e);
         }
     }

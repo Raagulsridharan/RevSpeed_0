@@ -65,8 +65,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "My Profile\n" +"============"+
-                "\n\tUserName\t : " + userName +
+        return "\n\tUserName\t : " + userName +
                 "\n\tName\t\t : " + firstName +" "+ lastname +
                 "\n\tMobileNumber : " + mobileNumber +
                 "\n\tEmailId\t\t : " + emailId +

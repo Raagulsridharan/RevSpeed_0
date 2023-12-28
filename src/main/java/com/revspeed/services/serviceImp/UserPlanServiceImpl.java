@@ -15,7 +15,9 @@ public class UserPlanServiceImpl implements UserPlanService {
         return userPlanServiceDAO.getUserPlans(userId);
     }
     public void showUserPlans(List<UserPlan> userPlans) {
-        System.out.println("PlanId \tPlanName \t\t PlanStatus \t PaymentStatus \t StartDate \t Enddate ");
+        //System.out.println("PlanId \tPlanName \t\t PlanStatus \t PaymentStatus \t StartDate \t Enddate ");
+        System.out.printf("%-8s %-20s %-15s %-15s %-12s %-12s%n",
+                "PlanId", "PlanName", "PlanStatus", "PaymentStatus", "StartDate", "EndDate");
         for (UserPlan userPlan : userPlans) {
             System.out.println(userPlan.toString());
         }

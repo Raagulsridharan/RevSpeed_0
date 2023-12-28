@@ -88,7 +88,9 @@ public class UserPlan {
 
     @Override
     public String toString() {
-        return "\t"+ planId+"\t"+ planName + "\t" + planStatus + "\t" + paymentStatus + "\t\t" + startDate + "\t\t\t" + endDate;
+        return String.format("%-8d %-20s %-15s %-15s %-12s %-12s",
+                planId, planName, planStatus, paymentStatus, startDate, endDate);
+        // return "\t"+ planId+"\t"+ planName + "\t" + planStatus + "\t" + paymentStatus + "\t\t" + startDate + "\t\t\t" + endDate;
     }
     private static Date incrementDate(Date date, int daysToAdd) {
         Calendar calendar = Calendar.getInstance();

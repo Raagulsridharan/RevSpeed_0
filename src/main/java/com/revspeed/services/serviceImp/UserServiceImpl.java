@@ -2,8 +2,11 @@ package com.revspeed.services.serviceImp;
 
 import com.revspeed.dao.UserServiceDAO;
 import com.revspeed.dao.daoImp.UserServiceDAOImpl;
+import com.revspeed.main.MainClass;
 import com.revspeed.services.UserService;
 import com.revspeed.domain.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.ls.LSOutput;
 
 import java.util.Scanner;
@@ -21,6 +24,7 @@ public class UserServiceImpl implements UserService {
                     "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     private static final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     public static boolean isValidEmail(String email) {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
@@ -28,6 +32,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register() {
         try {
+            logger.info("Registration Started {}", UserServiceImpl.class.getSimpleName());
+
             User userObject = new User();
 
             userObject.setUserName(checkUserName());
@@ -37,9 +43,9 @@ public class UserServiceImpl implements UserService {
             userObject.setLastname(sc.next());
             userObject.setMobileNumber(checkMobileNumber());
             userObject.setEmailId(checkEmailId());
+            sc.nextLine();
             System.out.print("Enter your Address : ");
             userObject.setAddress(sc.nextLine());
-            sc.nextLine();
             userObject.setPassword(checkPassword(userObject));
 
             UserServiceDAOImpl dao = new UserServiceDAOImpl();
@@ -48,11 +54,12 @@ public class UserServiceImpl implements UserService {
             if(userObject != null){
                 System.out.println("Registered successfully...");
             } else {
-                System.out.println("Registration failed!!");
+                System.out.println("Registration failed!!!");
             }
             return userObject;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            logger.error("Error in registration",e);
+            return null;
         }
     }
 
@@ -60,11 +67,11 @@ public class UserServiceImpl implements UserService {
         String password;
         boolean isSame;
         do {
-            password = promptPassword("Enter your password: ");
-            String retypePassword = promptPassword("retype password: ");
+            password = promptPassword("Enter your password : ");
+            String retypePassword = promptPassword("Retype your password : ");
             isSame = userObject.isSame(password, retypePassword);
             if(!isSame){
-                System.out.println("retype password mismatched !!");
+                System.out.println("Retype password mismatched!!!");
             }
         } while (!isSame);
         return password;
@@ -139,10 +146,11 @@ public class UserServiceImpl implements UserService {
             return sc.next();
         }
     }
-
     @Override
     public User login() {
-        System.out.println("For login....");
+        logger.info("Login Started {}", UserServiceImpl.class.getSimpleName());
+
+        System.out.println("For login.....");
         System.out.print("Enter Your UserName : ");
         String userName = sc.next();
         String password = promptPassword("Enter your password:");
