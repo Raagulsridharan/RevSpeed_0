@@ -16,15 +16,21 @@ import java.util.regex.Pattern;
 
 
 public class UserServiceImpl implements UserService {
-    private static final Scanner sc = new Scanner(System.in);
+    private final Scanner sc;
     Console console = System.console();
-    UserServiceDAO userServiceDAO = new UserServiceDAOImpl();
+    UserServiceDAO userServiceDAO;
     private static final String EMAIL_PATTERN =
             "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +
                     "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     private static final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
+    public UserServiceImpl(Scanner sc, UserServiceDAO userServiceDAO) {
+        this.sc = sc;
+        this.userServiceDAO = userServiceDAO;
+    }
+
     public static boolean isValidEmail(String email) {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
@@ -155,8 +161,10 @@ public class UserServiceImpl implements UserService {
         System.out.print("Enter Your UserName : ");
         String userName = sc.next();
         String password = promptPassword("Enter your password:");
-        UserServiceDAOImpl dao = new UserServiceDAOImpl();
-        User user = dao.getUser(userName, password);
+
+
+        User user = userServiceDAO.getUser(userName, password);
+
         if(user != null){
             System.out.println("Logged in successfully...");
         } else {

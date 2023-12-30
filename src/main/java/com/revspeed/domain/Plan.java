@@ -11,7 +11,6 @@ public class Plan {
     private int validityInDays;
     public Plan() {
     }
-
     public Plan(int planId, String planName, double cost, String planType, String planDescription, int validityInDays) {
         this.planId = planId;
         this.planName = planName;
@@ -20,7 +19,6 @@ public class Plan {
         this.planDescription = planDescription;
         this.validityInDays = validityInDays;
     }
-
     public int getPlanId() {
         return planId;
     }
@@ -57,7 +55,6 @@ public class Plan {
     public void setValidityInDays(int validityInDays) {
         this.validityInDays = validityInDays;
     }
-
     @Override
     public String toString() {
         return String.format("|%-7d| %-19s| %-5.2f| %-10s| %-15d| %-70s|",
