@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService {
             User userObject = new User();
 
             userObject.setUserName(checkUserName());
+
             System.out.print("Enter your Firstname : ");
             userObject.setFirstName(sc.next());
             System.out.print("Enter your Lastname : ");
@@ -172,9 +173,9 @@ public class UserServiceImpl implements UserService {
         return userServiceDAO.save(user);
     }
     public User updateEmail(User user) {
-        System.out.print("Please enter the Email Id : ");
-        String emailId = sc.next();
-        user.setEmailId(emailId);
+//        System.out.print("Please enter the Email Id : ");
+//        String emailId = sc.next();
+        user.setEmailId(checkEmailId());
         UserServiceDAO userServiceDAO = new UserServiceDAOImpl();
         System.out.println("Email Id updated successfully...");
         return userServiceDAO.save(user);

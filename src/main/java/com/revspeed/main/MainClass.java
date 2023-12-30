@@ -26,10 +26,10 @@ public class MainClass {
     private static final UserPaymentService userPaymentService = new UserPaymentServiceImpl();
     private static final Logger logger = LoggerFactory.getLogger(MainClass.class);
     public static void main(String[] args) {
-        logger.info("Application Started {} {}", "RevSpeed_0",MainClass.class.getSimpleName());
-        System.out.println("------------------------");
-        System.out.println("~ Welcome to RevSpeed_0 ~");
-        System.out.println("------------------------");
+        logger.info("{} Application Started {}", "RevSpeed_0",MainClass.class.getSimpleName());
+        System.out.println("|-------------------------|");
+        System.out.println("|~ Welcome to RevSpeed_0 ~|");
+        System.out.println("|-------------------------|");
         do {
             showMainMenu();
             while (user != null) {
@@ -59,10 +59,15 @@ public class MainClass {
                 user = userService.login();
                 break;
             case 3:
-                System.out.println("Forget password is loading...");
+                System.out.println("=================================");
+                System.out.println("Forget password is progressing...");
+                System.out.println("=================================");
+                showMainMenu();
                 break;
             case 4:
+                System.out.println("==========");
                 System.out.println("View Plans");
+                System.out.println("==========");
                 planService.showPlans(planService.getAllPlans());
                 break;
             case 5:
@@ -79,23 +84,23 @@ public class MainClass {
         int option = sc.nextInt();
         switch (option){
             case 1:
-                System.out.println("=======");
+                System.out.println("==========");
                 System.out.println("My Profile");
-                System.out.println("=======");
+                System.out.println("==========");
                 System.out.println(user.toString());
                 showUserProfileMenu();
                 break;
             case 2:
-                System.out.println("====================");
+                System.out.println("=======================");
                 System.out.println("Manage My Subscriptions");
-                System.out.println("====================");
+                System.out.println("=======================");
                 userPlanService.showUserPlans(userPlanService.getUserPlans(user.getUserId()));
                 showUserPlanMenu();
                 break;
             case 3:
-                System.out.println("==========");
+                System.out.println("==============");
                 System.out.println("View All Plans");
-                System.out.println("==========");
+                System.out.println("==============");
                 planService.showPlans(planService.getAllPlans());
                 break;
             case 4:
@@ -108,7 +113,7 @@ public class MainClass {
         }
     }
     private static void showUserProfileMenu() {
-        System.out.println("Choose Options :\n\t1.Update MobileNumber\n\t2.Change Password\n\t3.Update Email\n\t4.Back");
+        System.out.println("Choose Options :\n\t1.Update MobileNumber\n\t2.Change Password\n\t3.Update Email\n\t4.Back\nOption : ");
         int option = sc.nextInt();
         switch (option){
             case 1:
@@ -125,11 +130,11 @@ public class MainClass {
                 break;
             default:
                 System.out.println("Please choose correct option!!!");
-                showUserPlanMenu();
+                showUserProfileMenu();
         }
     }
     private static void showUserPlanMenu() {
-        System.out.println("Choose Options :\n\t1.Add Subscription\n\t2.Change Subscription\n\t3.Cancel Subscription\n\t4.Back");
+        System.out.println("Choose Options :\n\t1.Add Subscription\n\t2.Change Subscription\n\t3.Cancel Subscription\n\t4.Back\nOption : ");
         int option = sc.nextInt();
         switch (option){
             case 1:

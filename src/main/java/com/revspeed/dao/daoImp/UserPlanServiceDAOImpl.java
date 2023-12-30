@@ -2,6 +2,7 @@ package com.revspeed.dao.daoImp;
 
 import com.revspeed.dao.UserPlanServiceDAO;
 import com.revspeed.domain.UserPlan;
+import com.revspeed.jdbc.DBConnectionProperties;
 import com.revspeed.jdbc.GettingDBConnection;
 
 import java.sql.*;
@@ -12,6 +13,7 @@ public class UserPlanServiceDAOImpl implements UserPlanServiceDAO {
     private static Connection con = null;
     public UserPlanServiceDAOImpl() {
         con = GettingDBConnection.createInstance().getConnect();
+//        con = DBConnectionProperties.getConnect();
     }
     @Override
     public List<UserPlan> getUserPlans(int userId) {

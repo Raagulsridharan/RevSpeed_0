@@ -11,6 +11,16 @@ public class Plan {
     private int validityInDays;
     public Plan() {
     }
+
+    public Plan(int planId, String planName, double cost, String planType, String planDescription, int validityInDays) {
+        this.planId = planId;
+        this.planName = planName;
+        this.cost = cost;
+        this.planType = planType;
+        this.planDescription = planDescription;
+        this.validityInDays = validityInDays;
+    }
+
     public int getPlanId() {
         return planId;
     }
@@ -50,8 +60,10 @@ public class Plan {
 
     @Override
     public String toString() {
-        return String.format("%-8d %-20s %-10.2f %-15s %-15d %-80s",
+        return String.format("|%-7d| %-19s| %-5.2f| %-10s| %-15d| %-70s|",
                 planId, planName, cost, planType, validityInDays, planDescription);
+//        return String.format("%-8d %-20s %-10.2f %-15s %-15d %-80s",
+//                planId, planName, cost, planType, validityInDays, planDescription);
         //return "\t"+ planId + "\t" + planName + "\t" + cost + "\t" + planType + "\t\t" + validityInDays + "\t\t\t" + planDescription;
 
     }

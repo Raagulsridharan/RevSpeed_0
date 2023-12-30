@@ -3,6 +3,7 @@ package com.revspeed.dao.daoImp;
 import com.revspeed.dao.PlanDAO;
 import com.revspeed.domain.Plan;
 import com.revspeed.domain.User;
+import com.revspeed.jdbc.DBConnectionProperties;
 import com.revspeed.jdbc.GettingDBConnection;
 
 import java.sql.CallableStatement;
@@ -16,6 +17,7 @@ public class PlanDAOImpl implements PlanDAO {
     private static Connection con = null;
     public PlanDAOImpl() {
         con = GettingDBConnection.createInstance().getConnect();
+//        con = DBConnectionProperties.getConnect();
     }
     @Override
     public List<Plan> getAllPlans() {

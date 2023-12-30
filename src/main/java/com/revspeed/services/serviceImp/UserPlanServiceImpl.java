@@ -32,7 +32,7 @@ public class UserPlanServiceImpl implements UserPlanService {
     @Override
     public UserPlan findUserPlanById(List<UserPlan> userPlans, int planId) {
         for (UserPlan userPlan : userPlans) {
-            if (userPlan.getPlanId() == planId) {
+            if ((userPlan.getPlanId() == planId)&& (userPlan.getPaymentStatus().equalsIgnoreCase("paid"))) {
                 return userPlan;
             }
         }

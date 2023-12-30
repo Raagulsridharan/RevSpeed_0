@@ -1,5 +1,6 @@
 package com.revspeed.dao.daoImp;
 
+import com.revspeed.jdbc.DBConnectionProperties;
 import com.revspeed.jdbc.GettingDBConnection;
 import com.revspeed.dao.UserServiceDAO;
 import com.revspeed.domain.User;
@@ -12,7 +13,8 @@ import java.sql.*;
 public class UserServiceDAOImpl implements UserServiceDAO {
     private static Connection con = null;
     public UserServiceDAOImpl() {
-        con = GettingDBConnection.createInstance().getConnect();
+//        con = GettingDBConnection.createInstance().getConnect();
+        con = DBConnectionProperties.getConnect();
     }
     private static final Logger logger = LoggerFactory.getLogger(UserServiceDAOImpl.class);
     public User save(User userObject) {

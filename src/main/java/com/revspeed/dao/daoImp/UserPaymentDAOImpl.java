@@ -3,6 +3,7 @@ package com.revspeed.dao.daoImp;
 import com.revspeed.dao.UserPaymentDAO;
 import com.revspeed.domain.UserPayment;
 import com.revspeed.domain.UserPlan;
+import com.revspeed.jdbc.DBConnectionProperties;
 import com.revspeed.jdbc.GettingDBConnection;
 
 import java.sql.CallableStatement;
@@ -13,6 +14,7 @@ public class UserPaymentDAOImpl implements UserPaymentDAO {
     private static Connection con = null;
     public UserPaymentDAOImpl() {
         con = GettingDBConnection.createInstance().getConnect();
+//        con = DBConnectionProperties.getConnect();
     }
     public UserPayment save(UserPayment userPayment) {
         if(userPayment.getPaymentId() == 0){
