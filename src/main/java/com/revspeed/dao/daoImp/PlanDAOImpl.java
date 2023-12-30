@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlanDAOImpl implements PlanDAO {
-    private static Connection con = null;
-    public PlanDAOImpl() {
-        con = GettingDBConnection.createInstance().getConnect();
+    private Connection con = null;
+    public PlanDAOImpl(Connection con) {
+        this.con = con;
 //        con = DBConnectionProperties.getConnect();
     }
     @Override

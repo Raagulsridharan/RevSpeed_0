@@ -67,4 +67,11 @@ public class Plan {
         //return "\t"+ planId + "\t" + planName + "\t" + cost + "\t" + planType + "\t\t" + validityInDays + "\t\t\t" + planDescription;
 
     }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Plan plan = (Plan) obj;
+        return planId == plan.planId && planName.equals(plan.planName) && cost==plan.cost && planType.equals(plan.planType) && planDescription.equals(plan.planDescription) && validityInDays==plan.validityInDays;
+    }
 }

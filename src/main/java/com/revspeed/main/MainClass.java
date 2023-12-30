@@ -4,6 +4,7 @@ import com.revspeed.dao.daoImp.PlanDAOImpl;
 import com.revspeed.domain.Plan;
 import com.revspeed.domain.UserPayment;
 import com.revspeed.domain.UserPlan;
+import com.revspeed.jdbc.GettingDBConnection;
 import com.revspeed.services.UserPaymentService;
 import com.revspeed.services.UserPlanService;
 import com.revspeed.services.serviceImp.PlanServiceImpl;
@@ -14,15 +15,17 @@ import com.revspeed.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Connection;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
 public class MainClass {
+    private static final Connection con = GettingDBConnection.createInstance().getConnect();
     private static final Scanner sc = new Scanner(System.in);
     private static User user = null; // session
     private static final UserServiceImpl userService = new UserServiceImpl();
-    private static final PlanServiceImpl planService = new PlanServiceImpl(new PlanDAOImpl());
+    private static final PlanServiceImpl planService = new PlanServiceImpl(new PlanDAOImpl(con));
     private static final UserPlanService userPlanService = new UserPlanServiceImpl();
     private static final UserPaymentService userPaymentService = new UserPaymentServiceImpl();
     private static final Logger logger = LoggerFactory.getLogger(MainClass.class);
