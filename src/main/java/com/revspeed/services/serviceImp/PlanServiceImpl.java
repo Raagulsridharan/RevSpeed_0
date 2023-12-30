@@ -8,9 +8,13 @@ import com.revspeed.services.PlanService;
 import java.util.List;
 
 public class PlanServiceImpl implements PlanService {
+    private final PlanDAO planDAO;
+    public PlanServiceImpl(PlanDAO planDAO) {
+        this.planDAO = planDAO;
+    }
+
     @Override
     public List<Plan> getAllPlans() {
-        PlanDAO planDAO = new PlanDAOImpl();
         return planDAO.getAllPlans();
     }
 
