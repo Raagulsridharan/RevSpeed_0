@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,12 +41,13 @@ public class UserServiceImplTests {
     @Test
     public void login_should_not_return_user(){
         //Arrange
-        User user = new User("ravi","ravi","s",9876543210l,"ravi@gmail.com","7,Car street,Salem","password");
-        user.setUserId(1);
         String simulatedInput = "ravi password";
         System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
 
         Scanner mockScanner = new Scanner(System.in);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
 
         UserServiceDAO mockUserServiceDAOImpl = mock(UserServiceDAOImpl.class);
         when(mockUserServiceDAOImpl.getUser(anyString(),anyString())).thenReturn(null);
@@ -56,5 +59,7 @@ public class UserServiceImplTests {
         //Assert
         assertThat(actualUser).isNull();
         System.setIn(System.in);
+
+        Assertions.assertTrue(outputStream.toString().contains("Invalid username or password..."));
     }
 }
