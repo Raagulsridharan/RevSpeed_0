@@ -62,4 +62,5 @@ public class UserServiceImplTests {
 
         Assertions.assertTrue(outputStream.toString().contains("Invalid username or password..."));
     }
+
 }

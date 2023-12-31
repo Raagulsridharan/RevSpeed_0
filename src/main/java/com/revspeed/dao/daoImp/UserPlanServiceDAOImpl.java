@@ -9,10 +9,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.revspeed.utilities.DateUtilities.convertToSqlDate;
+import static com.revspeed.utilities.DateUtilities.convertToUtilDate;
+
 public class UserPlanServiceDAOImpl implements UserPlanServiceDAO {
     private static Connection con = null;
-    public UserPlanServiceDAOImpl() {
-        con = GettingDBConnection.createInstance().getConnect();
+    public UserPlanServiceDAOImpl(Connection con) {
+        this.con = con;
 //        con = DBConnectionProperties.getConnect();
     }
     @Override
@@ -88,14 +91,11 @@ public class UserPlanServiceDAOImpl implements UserPlanServiceDAO {
         userPlan.setPlanName(resultSet.getString("planName"));
         userPlan.setPlanStatus(resultSet.getString("planStatus"));
         userPlan.setPaymentStatus(resultSet.getString("paymentStatus"));
-        userPlan.setStartDate(resultSet.getDate("startDate"));
-        userPlan.setEndDate(resultSet.getDate("endDate"));
+        userPlan.setStartDate(convertToUtilDate(resultSet.getDate("startDate")));
+        userPlan.setEndDate(convertToUtilDate(resultSet.getDate("endDate")));
         userPlan.setRemarks(resultSet.getString("remarks"));
         return  userPlan;
     }
 
-    private static java.sql.Date convertToSqlDate(java.util.Date utilDate) {
-        // Convert java.util.Date to java.sql.Date
-        return new java.sql.Date(utilDate.getTime());
-    }
+
 }

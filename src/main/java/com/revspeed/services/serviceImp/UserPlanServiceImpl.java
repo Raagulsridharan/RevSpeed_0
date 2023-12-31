@@ -3,6 +3,7 @@ package com.revspeed.services.serviceImp;
 import com.revspeed.dao.UserPlanServiceDAO;
 import com.revspeed.dao.daoImp.UserPlanServiceDAOImpl;
 import com.revspeed.domain.UserPlan;
+import com.revspeed.jdbc.GettingDBConnection;
 import com.revspeed.services.UserPlanService;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public class UserPlanServiceImpl implements UserPlanService {
 
     @Override
     public List<UserPlan> getUserPlans(int userId) {
-        UserPlanServiceDAO userPlanServiceDAO = new UserPlanServiceDAOImpl();
+        UserPlanServiceDAO userPlanServiceDAO = new UserPlanServiceDAOImpl(GettingDBConnection.createInstance().getConnect());
         return userPlanServiceDAO.getUserPlans(userId);
     }
     public void showUserPlans(List<UserPlan> userPlans) {
@@ -25,7 +26,7 @@ public class UserPlanServiceImpl implements UserPlanService {
 
     @Override
     public UserPlan saveUserPlan(UserPlan userPlan) {
-       UserPlanServiceDAO userPlanServiceDAO = new UserPlanServiceDAOImpl();
+       UserPlanServiceDAO userPlanServiceDAO = new UserPlanServiceDAOImpl(GettingDBConnection.createInstance().getConnect());
        return userPlanServiceDAO.save(userPlan);
     }
 

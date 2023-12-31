@@ -1,10 +1,9 @@
 package com.revspeed.domain;
 
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
-import static java.util.Date.*;
+import static com.revspeed.utilities.DateUtilities.convertToSqlDate;
 
 public class UserPlan {
     private int userPlanId;
@@ -62,6 +61,7 @@ public class UserPlan {
         this.paymentStatus = paymentStatus;
     }
     public Date getStartDate() {
+        //return convertToSqlDate(startDate);
         return startDate;
     }
     public void setStartDate(Date startDate) {
@@ -113,5 +113,19 @@ public class UserPlan {
         this.planStatus = "Cancelled";
         this.endDate = new Date();
         this.remarks = "subscription cancelled";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        UserPlan userPlan = (UserPlan) obj;
+        return userPlanId == userPlan.userPlanId
+                && userid == userPlan.userid
+                && planId == userPlan.planId
+                && paymentStatus.equals(userPlan.paymentStatus)
+                && planStatus.equals(userPlan.planStatus)
+                && startDate.equals(userPlan.startDate)
+                && endDate.equals(userPlan.endDate);
     }
 }
