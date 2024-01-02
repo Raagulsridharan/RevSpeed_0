@@ -37,9 +37,8 @@ public class UserPlanServiceDAOImplTests {
 
         when(mockCon.prepareCall(anyString())).thenReturn(mockCallableStatement);
         when(mockCallableStatement.executeQuery()).thenReturn(mockResultSet);
-        //mockCallableStatement.setInt(1,anyInt());
         when(mockResultSet.next()).thenReturn(true,false);
-        System.out.println(""+userPlan.getStartDate());
+
         when(mockResultSet.getInt("userPlanId")).thenReturn(userPlan.getUserPlanId());
         when(mockResultSet.getInt("userId")).thenReturn(userPlan.getUserPlanId());
         when(mockResultSet.getInt("planId")).thenReturn(userPlan.getPlanId());
@@ -49,7 +48,6 @@ public class UserPlanServiceDAOImplTests {
         //when(mockResultSet.getDate("startDate")).thenReturn(userPlan.getStartDate());
         when(mockResultSet.getDate("startDate")).thenReturn(convertToSqlDate(userPlan.getStartDate()));
         when(mockResultSet.getDate("endDate")).thenReturn(convertToSqlDate(userPlan.getEndDate()));
-
         when(mockResultSet.getString("remarks")).thenReturn(userPlan.getRemarks());
 
         

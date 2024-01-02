@@ -5,6 +5,7 @@ import com.revspeed.dao.daoImp.UserServiceDAOImpl;
 import com.revspeed.domain.Plan;
 import com.revspeed.domain.UserPayment;
 import com.revspeed.domain.UserPlan;
+import com.revspeed.jdbc.DBConnectionProperties;
 import com.revspeed.jdbc.GettingDBConnection;
 import com.revspeed.services.UserPaymentService;
 import com.revspeed.services.UserPlanService;
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MainClass {
-    private static final Connection con = GettingDBConnection.createInstance().getConnect();
+    private static final Connection con = DBConnectionProperties.getConnect();//GettingDBConnection.createInstance().getConnect();
     private static final Scanner sc = new Scanner(System.in);
     private static User user = null; // session
     private static final UserServiceDAOImpl dao = new UserServiceDAOImpl();
@@ -44,7 +45,7 @@ public class MainClass {
         } while (true);
     }
     private static void showMainMenu() {
-        System.out.print("Choose Your Option :\n\t1.Login\n\t2.Register\n\t3.Forget Password\n\t4.View Plans\n\t5.Exit\nOption : ");
+        System.out.print("Choose Your Option :\n\t1.Login\n\t2.Register\n\t3.View Plans\n\t4.Exit\nOption : ");
         int option = sc.nextInt();
         switch (option){
             case 1:
@@ -65,18 +66,12 @@ public class MainClass {
                 user = userService.login();
                 break;
             case 3:
-                System.out.println("=================================");
-                System.out.println("Forget password is progressing...");
-                System.out.println("=================================");
-                showMainMenu();
-                break;
-            case 4:
                 System.out.println("==========");
                 System.out.println("View Plans");
                 System.out.println("==========");
                 planService.showPlans(planService.getAllPlans());
                 break;
-            case 5:
+            case 4:
                 System.out.println("Exiting... Thanks!!");
                 System.exit(0);
                 break;

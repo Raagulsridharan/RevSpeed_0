@@ -1,5 +1,7 @@
 package com.revspeed.domain;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -88,8 +90,9 @@ public class UserPlan {
 
     @Override
     public String toString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return String.format("%-8d %-20s %-15s %-15s %-12s %-12s",
-                planId, planName, planStatus, paymentStatus, startDate, endDate);
+                planId, planName, planStatus, paymentStatus, sdf.format(startDate) ,sdf.format(endDate));
         // return "\t"+ planId+"\t"+ planName + "\t" + planStatus + "\t" + paymentStatus + "\t\t" + startDate + "\t\t\t" + endDate;
     }
     private static Date incrementDate(Date date, int daysToAdd) {
